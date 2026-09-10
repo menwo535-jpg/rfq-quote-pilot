@@ -1,6 +1,6 @@
 # RFQ extraction and approved-price matching pilot
 
-A runnable software sample created for a potential quotation-preparation project. Synthetic inputs only; this is not a previous client delivery. It currently exports CSV, JSON and an HTML review page. A complete n8n workflow and native XLSX export are **not implemented**.
+A runnable software sample created for a potential quotation-preparation project. Synthetic inputs only; this is not a previous client delivery. The portable Python CLI exports CSV, JSON and an HTML review page. A native [Excel demonstration workbook](quote-draft.xlsx) is also available, produced separately from the same JSON result using the Codex bundled spreadsheet runtime. See [XLSX notes](XLSX-NOTES.md) for validation and limitations. A complete n8n workflow and standalone Python XLSX export are **not implemented**.
 
 ## Run
 
@@ -14,7 +14,7 @@ python quote.py samples/rfq.pdf samples/catalogue.csv --out output
 python -m unittest -v
 ```
 
-Open `output/review.html` to inspect the output. The bundled example produces six rows, four review flags and a **matched-lines subtotal of USD 32.50**. The complete quotation total remains absent until unresolved lines are addressed. CSV opens in Excel, but this is not an XLSX workbook.
+Open `output/review.html` to inspect the output. The bundled example produces six rows, four review flags and a **matched-lines subtotal of USD 32.50**. The complete quotation total remains absent until unresolved lines are addressed. The ZIP contains the portable CSV/JSON/HTML demonstration; download `quote-draft.xlsx` separately for the native Excel draft.
 
 Exit codes: 0 = matched draft awaiting human approval, 2 = output generated with review required, 1 = invalid input/runtime error. The sample deliberately exits 2; it is not a failed extraction.
 
