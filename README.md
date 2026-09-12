@@ -1,20 +1,21 @@
 # RFQ extraction and approved-price matching pilot
 
-A runnable software sample created for a potential quotation-preparation project. Synthetic inputs only; this is not a previous client delivery. The portable Python CLI exports CSV, JSON and an HTML review page. A tested [local HTTP adapter](HTTP-INTEGRATION.md) now accepts PDF/TXT content and returns those same outputs for workflow integration. A native [Excel demonstration workbook](quote-draft.xlsx) is also available, produced separately from the same JSON result using the Codex bundled spreadsheet runtime. See [XLSX notes](XLSX-NOTES.md) for validation and limitations. An executed n8n workflow and standalone Python XLSX export are **not implemented**.
+A runnable software sample created for a potential quotation-preparation project. Synthetic inputs only; this is not a previous client delivery. The portable Python CLI exports CSV, JSON and an HTML review page, with optional native Excel export via `--xlsx`. The tested [local HTTP adapter](HTTP-INTEGRATION.md) accepts PDF/TXT content and returns the same outputs, including base64 XLSX when requested. The exporter uses the public XlsxWriter package and requires no Codex or paid API. See [XLSX notes](XLSX-NOTES.md) for the snapshot format and precision limits. An executed n8n workflow is **not implemented**.
 
 ## Run
 
-Download and unzip [`rfq-pilot-demo.zip`](rfq-pilot-demo.zip) for the complete runnable package, including the PDF/TXT fixtures, catalogue and generated outputs. The individual source files in the repository are also provided for convenient inspection.
+The [rfq-pilot-xlsx-demo.zip](rfq-pilot-xlsx-demo.zip) release package includes the source, PDF/TXT fixtures, catalogue, tests and generated outputs. Older `rfq-pilot-demo.zip` packages do not contain this new exporter. Use the matching source and requirements from the new package together. A generated [Excel sample](output/quote-draft.xlsx) is included.
 
 Python 3.10+ is required. No paid API, hosted service or third-party credentials are needed. The optional HTTP adapter uses a private token generated on your own computer.
 
 ```sh
 python -m pip install -r requirements.txt
-python quote.py samples/rfq.pdf samples/catalogue.csv --out output
+python quote.py samples/rfq.pdf samples/catalogue.csv --out output --xlsx
+python -m pip install -r requirements-test.txt
 python -m unittest -v
 ```
 
-Open `output/review.html` to inspect the output. The bundled example produces six rows, four review flags and a **matched-lines subtotal of USD 32.50**. The complete quotation total remains absent until unresolved lines are addressed. The ZIP contains the portable CLI, HTTP adapter, samples, tests and CSV/JSON/HTML demonstration; download `quote-draft.xlsx` separately for the native Excel draft.
+Open `output/quote-draft.xlsx` or `output/review.html` to inspect the output. The bundled example produces six rows, four review flags and a **matched-lines subtotal of USD 32.50**. The complete quotation total remains absent until unresolved lines are addressed. Excel cells contain the validated Python results as a snapshot, not editable calculation or approval controls. Correct the source files and rerun to update them. Omitting `--xlsx` preserves the earlier CSV/JSON/HTML behavior; use a fresh output directory per input set to avoid confusing older artifacts with new ones.
 
 For the HTTP adapter, follow [HTTP-INTEGRATION.md](HTTP-INTEGRATION.md). It requires a private local token and listens only on loopback. It is intended for small trusted tests on one computer. The guide explains how to configure an n8n HTTP Request node, but that n8n configuration has not been executed. There is no internet-hosted endpoint.
 
@@ -34,6 +35,6 @@ Exit codes: 0 = matched draft awaiting human approval, 2 = output generated with
 
 This is a draft-preparation tool, not tax/accounting software. No stock reservation, VAT, freight, discount rules, exchange conversion, OCR, ERP access, email sending, production hosting, automatic approval or generic PDF-layout inference. A matching draft still requires human approval. The supplied PDF is a demonstrator, not the client's agreed format. Production data needs separate validation.
 
-The 31 tests cover money rounding, malformed inputs, duplicates, unknown products, unit/description mismatches, currency separation, formula/text escaping, real PDF-to-output processing, and the local HTTP adapter's authentication, request validation and output. `make_sample_pdf.py` regenerates the synthetic fixture using reportlab; reportlab is not needed to run the delivered CLI or adapter.
+The 47 tests cover money rounding, malformed inputs, duplicates, unknown products, unit/description mismatches, currency separation, literal spreadsheet text, real PDF-to-output processing, and the local HTTP adapter. The 16 new Excel/HTTP tests read generated workbooks with the independent openpyxl reader, including zero prices, half-cent rounding, leading zeros, Chinese text, 500 rows, cell-length limits, precision overflow and backward compatibility. `make_sample_pdf.py` regenerates the synthetic fixture using reportlab; reportlab is not needed to run the delivered CLI or adapter. Native Microsoft Excel and n8n have not been used for this validation.
 
-Proposed first paid test: **USD 15 fixed**, one client-provided redacted text PDF (up to 20 item rows) and one catalogue sample (up to 100 rows), one agreed layout, source + CSV/JSON/review output + one correction round. Scope and payment method must be agreed before work is commissioned. Native Excel/n8n integration would be separately scoped after seeing the files and deployment environment.
+Proposed first paid test: **USD 15 fixed**, one client-provided redacted text PDF (up to 20 item rows) and one catalogue sample (up to 100 rows), one agreed layout, source + CSV/JSON/review output + one correction round. Scope and payment method must be agreed before work is commissioned. The available Excel exporter can be demonstrated now; client-specific workbook columns and n8n deployment remain separately scoped after seeing the files and environment. This code improvement is not evidence of a confirmed order or payment.

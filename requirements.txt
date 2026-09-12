@@ -1,1 +1,2 @@
 pdfplumber>=0.11,<0.12
+XlsxWriter>=3.2.9,<4

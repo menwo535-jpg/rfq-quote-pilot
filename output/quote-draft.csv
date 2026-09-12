@@ -1,0 +1,7 @@
+﻿source,code,description,quantity,unit,status,reason,unit_price,currency,line_total,price_version
+p1:line5,MCB-16,Circuit breaker 16A,2,EA,MATCHED_DRAFT,,8.75,USD,17.50,DEMO-2026-09-v1
+p1:line6,CABLE-25,Cable 2.5 mm2,12.5,M,MATCHED_DRAFT,,1.20,USD,15.00,DEMO-2026-09-v1
+p1:line7,UNKNOWN-9,Unlisted part,1,EA,REVIEW,unknown product code,,,,
+p1:line8,MCB-32,Circuit breaker 32A,3,BOX,REVIEW,unit mismatch or missing unit,,,,
+p1:line9,RELAY-12,Relay 12V,0,EA,REVIEW,quantity must be positive,,,,
+p1:line10,CONTACT-1,Contactor,1,EA,REVIEW,duplicate catalogue code,,,,

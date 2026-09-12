@@ -166,10 +166,16 @@ def render_html(quote):
 <div class="table"><table><thead><tr>{headings}</tr></thead><tbody>{rows}</tbody></table></div><footer>Synthetic demonstration inputs. No taxes, freight, discounts, exchange-rate conversion or automatic sending. Row references identify extracted page and text line.</footer></main></html>'''
 
 
-def run(rfq_path, catalogue_path, output):
+def run(rfq_path, catalogue_path, output, *, include_xlsx=False):
     quote = prepare_quote(read_rfq(rfq_path), read_catalogue(catalogue_path))
     quote['sources'] = {name: {'file': p.name, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
                         for name, p in [('rfq', rfq_path), ('approved_catalogue', catalogue_path)]}
+    xlsx = None
+    if include_xlsx:
+        from xlsx_export import render_xlsx
+        # Validate and build before changing output files. XLSX has a smaller
+        # numeric range than the Decimal-based JSON/CSV output.
+        xlsx = render_xlsx(quote)
     output.mkdir(parents=True, exist_ok=True)
     with (output / 'quote-draft.csv').open('w', encoding='utf-8-sig', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=OUTPUT_FIELDS)
@@ -177,6 +183,8 @@ def run(rfq_path, catalogue_path, output):
         writer.writerows({k: spreadsheet_text(v) for k, v in row.items()} for row in quote['rows'])
     (output / 'quote-result.json').write_text(json.dumps(quote, indent=2, ensure_ascii=False), encoding='utf-8')
     (output / 'review.html').write_text(render_html(quote), encoding='utf-8')
+    if xlsx is not None:
+        (output / 'quote-draft.xlsx').write_bytes(xlsx)
     return quote
 
 
@@ -185,9 +193,10 @@ def main():
     parser.add_argument('rfq', type=Path)
     parser.add_argument('catalogue', type=Path)
     parser.add_argument('--out', type=Path, default=Path('output'))
+    parser.add_argument('--xlsx', action='store_true', help='also export a native Excel review snapshot')
     args = parser.parse_args()
     try:
-        quote = run(args.rfq, args.catalogue, args.out)
+        quote = run(args.rfq, args.catalogue, args.out, include_xlsx=args.xlsx)
     except (ValueError, OSError, ImportError) as exc:
         parser.exit(1, f'Error: {exc}\n')
     print(json.dumps({k: v for k, v in quote.items() if k not in ('rows', 'sources')}))

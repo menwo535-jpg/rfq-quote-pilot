@@ -1,0 +1,98 @@
+{
+  "status": "REVIEW_REQUIRED",
+  "rows": [
+    {
+      "source": "p1:line5",
+      "code": "MCB-16",
+      "description": "Circuit breaker 16A",
+      "quantity": "2",
+      "unit": "EA",
+      "status": "MATCHED_DRAFT",
+      "reason": "",
+      "unit_price": "8.75",
+      "currency": "USD",
+      "line_total": "17.50",
+      "price_version": "DEMO-2026-09-v1"
+    },
+    {
+      "source": "p1:line6",
+      "code": "CABLE-25",
+      "description": "Cable 2.5 mm2",
+      "quantity": "12.5",
+      "unit": "M",
+      "status": "MATCHED_DRAFT",
+      "reason": "",
+      "unit_price": "1.20",
+      "currency": "USD",
+      "line_total": "15.00",
+      "price_version": "DEMO-2026-09-v1"
+    },
+    {
+      "source": "p1:line7",
+      "code": "UNKNOWN-9",
+      "description": "Unlisted part",
+      "quantity": "1",
+      "unit": "EA",
+      "status": "REVIEW",
+      "reason": "unknown product code",
+      "unit_price": "",
+      "currency": "",
+      "line_total": "",
+      "price_version": ""
+    },
+    {
+      "source": "p1:line8",
+      "code": "MCB-32",
+      "description": "Circuit breaker 32A",
+      "quantity": "3",
+      "unit": "BOX",
+      "status": "REVIEW",
+      "reason": "unit mismatch or missing unit",
+      "unit_price": "",
+      "currency": "",
+      "line_total": "",
+      "price_version": ""
+    },
+    {
+      "source": "p1:line9",
+      "code": "RELAY-12",
+      "description": "Relay 12V",
+      "quantity": "0",
+      "unit": "EA",
+      "status": "REVIEW",
+      "reason": "quantity must be positive",
+      "unit_price": "",
+      "currency": "",
+      "line_total": "",
+      "price_version": ""
+    },
+    {
+      "source": "p1:line10",
+      "code": "CONTACT-1",
+      "description": "Contactor",
+      "quantity": "1",
+      "unit": "EA",
+      "status": "REVIEW",
+      "reason": "duplicate catalogue code",
+      "unit_price": "",
+      "currency": "",
+      "line_total": "",
+      "price_version": ""
+    }
+  ],
+  "review_count": 4,
+  "matched_subtotals_by_currency": {
+    "USD": "32.50"
+  },
+  "complete_totals_by_currency": null,
+  "sources": {
+    "rfq": {
+      "file": "rfq.pdf",
+      "sha256": "6c968e240b105222bd277a2d6a73014c8b47899df65e2ce6b7c117d1cf9dd7b1"
+    },
+    "approved_catalogue": {
+      "file": "catalogue.csv",
+      "sha256": "35c21982b2c63f08bf05e1e4eab47ca3534c08cab35761b330a52daaa31582c1"
+    }
+  }
+}

@@ -7,7 +7,9 @@ from pathlib import Path
 from local_api import MAX_REQUEST_BYTES
 
 
-def make_request(rfq, catalogue):
+def make_request(rfq, catalogue, *, include_xlsx=False):
+    if not isinstance(include_xlsx, bool):
+        raise ValueError('include_xlsx must be a boolean')
     if rfq.suffix.lower() not in ('.txt', '.pdf'):
         raise ValueError('RFQ must be TXT or PDF')
     if rfq.stat().st_size > MAX_REQUEST_BYTES or catalogue.stat().st_size > MAX_REQUEST_BYTES:
@@ -20,6 +22,8 @@ def make_request(rfq, catalogue):
         },
         'catalogue_csv': catalogue.read_text(encoding='utf-8-sig'),
     }
+    if include_xlsx:
+        request['include_xlsx'] = True
     body = json.dumps(request, ensure_ascii=True).encode('utf-8')
     if len(body) > MAX_REQUEST_BYTES:
         raise ValueError('encoded HTTP JSON exceeds 1 MB; use a smaller sample')
@@ -31,9 +35,10 @@ def main():
     parser.add_argument('rfq', type=Path)
     parser.add_argument('catalogue', type=Path)
     parser.add_argument('--out', type=Path, default=Path('request.json'))
+    parser.add_argument('--xlsx', action='store_true', help='request native XLSX in the response')
     args = parser.parse_args()
     try:
-        body = make_request(args.rfq, args.catalogue)
+        body = make_request(args.rfq, args.catalogue, include_xlsx=args.xlsx)
         args.out.write_bytes(body)
     except (ValueError, OSError) as exc:
         parser.exit(1, f'Error: {exc}\n')

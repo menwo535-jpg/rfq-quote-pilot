@@ -19,8 +19,12 @@ MAX_REQUEST_BYTES = 1_000_000
 
 def build_response(payload):
     """Accept content only, never paths, URLs, output locations or commands."""
-    if not isinstance(payload, dict) or set(payload) != {'rfq', 'catalogue_csv'}:
-        raise ValueError('expected only rfq and catalogue_csv fields')
+    required = {'rfq', 'catalogue_csv'}
+    if not isinstance(payload, dict) or not required <= set(payload) or set(payload) - required - {'include_xlsx'}:
+        raise ValueError('expected rfq, catalogue_csv and optional include_xlsx fields')
+    include_xlsx = payload.get('include_xlsx', False)
+    if not isinstance(include_xlsx, bool):
+        raise ValueError('include_xlsx must be a boolean')
     rfq = payload['rfq']
     if not isinstance(rfq, dict) or set(rfq) != {'format', 'content'}:
         raise ValueError('rfq requires only format and content fields')
@@ -51,14 +55,18 @@ def build_response(payload):
         catalogue_path = root / 'catalogue.csv'
         rfq_path.write_bytes(content)
         catalogue_path.write_text(catalogue, encoding='utf-8', newline='')
-        result = run(rfq_path, catalogue_path, root / 'output')
-        return {
+        result = run(rfq_path, catalogue_path, root / 'output', include_xlsx=include_xlsx)
+        response = {
             'quote': result,
             'artifacts': {
                 'csv_utf8': (root / 'output/quote-draft.csv').read_text(encoding='utf-8-sig'),
                 'review_html': (root / 'output/review.html').read_text(encoding='utf-8'),
             },
         }
+        if include_xlsx:
+            response['artifacts']['xlsx_base64'] = base64.b64encode(
+                (root / 'output/quote-draft.xlsx').read_bytes()).decode('ascii')
+        return response
 
 
 def create_server(token, port=8765):
@@ -123,7 +131,7 @@ def create_server(token, port=8765):
             try:
                 result = build_response(payload)
             except ImportError:
-                return self.reply(503, {'error': 'PDF support unavailable; install requirements.txt'})
+                return self.reply(503, {'error': 'requested format support unavailable; install requirements.txt'})
             except (ValueError, UnicodeError, csv.Error) as exc:
                 return self.reply(422, {'error': str(exc)})
             except Exception:

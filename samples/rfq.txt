@@ -1,0 +1,9 @@
+RFQ DEMO-001 - synthetic electrical parts request
+ITEMS
+MCB-16 | Circuit breaker 16A | 2 | EA
+CABLE-25 | Cable 2.5 mm2 | 12.5 | M
+UNKNOWN-9 | Unlisted part | 1 | EA
+MCB-32 | Circuit breaker 32A | 3 | BOX
+RELAY-12 | Relay 12V | 0 | EA
+CONTACT-1 | Contactor | 1 | EA
+END ITEMS
