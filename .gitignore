@@ -3,3 +3,6 @@ __pycache__/
 node_modules/
 .n8n/
 .env
+*.sqlite*
+*.db
+*.db-journal

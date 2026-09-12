@@ -33,6 +33,8 @@ The total encoded JSON request must be at most 1,000,000 bytes, including PDF ba
 
 ## Request and response
 
+For persisted results and safe retries, the optional [SQLite job routes](PERSISTENT-JOBS.md) reuse this same request format. Enable them with `--database drafts.sqlite3`. `/quote` remains stateless with the response documented below.
+
 The required request fields are `rfq` and `catalogue_csv`, plus optional boolean `include_xlsx` (default false). `rfq` contains `format` (`txt` or `pdf_base64`) and string `content`. `catalogue_csv` contains the full approved CSV, including its header. Other fields are rejected. Example text request:
 
 ```json
