@@ -2,7 +2,7 @@
 
 The Python demo has a **tested loopback HTTP endpoint**. It reuses `quote.py`; it does not duplicate the matching or money calculations in an automation platform. The input can be the documented text layout or its text-based PDF. The response contains the quote JSON, escaped CSV text, escaped HTML review page, and optional base64 XLSX.
 
-This is a portfolio demonstration with synthetic fixtures. **An n8n workflow has not been imported or executed.** The endpoint now generates native XLSX with the public Python XlsxWriter package when `include_xlsx` is true. No API credits or hosted account are needed.
+This is a portfolio demonstration with synthetic fixtures. An [importable n8n workflow](n8n/README.md) has been imported and executed in an isolated native n8n 2.38.7 instance against this endpoint. Seven integration cases passed. The endpoint generates native XLSX with the public Python XlsxWriter package when `include_xlsx` is true. No API credits or hosted account are needed.
 
 ## Run on one computer
 
@@ -65,7 +65,7 @@ Missing or false `include_xlsx` retains the original response shape. A string su
 
 Errors: 400 malformed JSON/request framing; 401 missing/incorrect token; 403 non-local Host; 404 unknown route; 405 unsupported method; 408 body timeout; 411 missing/invalid length; 413 size limit; 415 wrong content type; 422 validation/Excel precision error; 503 missing requested-format dependency; 500 parser/internal failure. No input content or token is written to access logs. Do not auto-retry invalid files indefinitely.
 
-## n8n connection guide — not yet executed in n8n
+## n8n connection guide
 
 These steps target an n8n process running **natively on the same computer**, with access to that computer's loopback interface. n8n Cloud and an ordinary separate Docker network cannot reach this URL. Those environments require separately scoped hosting/networking; changing the URL alone is insufficient.
 
@@ -76,7 +76,7 @@ These steps target an n8n process running **natively on the same computer**, wit
 5. Manually execute the small synthetic test. Inspect `quote.status`, review flags, separate subtotals and the returned CSV/HTML before connecting any later node.
 6. Add a review step for every draft. No automatic email, ERP mutation, payment or approval is part of this demonstration.
 
-The exact node labels depend on the installed n8n version. Source checked: [official HTTP Request documentation](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest). This guide is a configuration recipe, not evidence of a completed n8n integration.
+The exact node labels depend on the installed n8n version. Source checked: [official HTTP Request documentation](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest). For the actual tested workflow export, review branches, file conversion, environment and execution evidence, see [the n8n integration](n8n/README.md). Its checks use the real CLI execution engine; the editor UI, n8n Cloud and customer environments have not been tested.
 
 ## Verification
 

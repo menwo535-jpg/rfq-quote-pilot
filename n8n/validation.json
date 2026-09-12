@@ -1,0 +1,96 @@
+{
+  "started_utc": "2026-09-12T21:45:54.211934+00:00",
+  "synthetic_only": true,
+  "cases": [
+    {
+      "case": "sample_pdf",
+      "seconds": 9.688,
+      "cli_exit_code": 0,
+      "outcome": "REVIEW_REQUIRED",
+      "branch": "Unresolved lines - review required",
+      "review_count": 4,
+      "matched_subtotals": {
+        "USD": "32.50"
+      },
+      "xlsx_bytes": 8016,
+      "xlsx_sha256": "fe20cccb6b87c8442c9447b1e050f55526b01a412a700a757afac9f0a7c33c27",
+      "passed": true
+    },
+    {
+      "case": "matched_currencies",
+      "seconds": 9.468,
+      "cli_exit_code": 0,
+      "outcome": "DRAFT_FOR_APPROVAL",
+      "branch": "Draft awaiting human approval",
+      "review_count": 0,
+      "matched_subtotals": {
+        "USD": "3.09",
+        "EUR": "7.50"
+      },
+      "xlsx_bytes": 7646,
+      "xlsx_sha256": "dbf4e730303eba0e779e484fab9a52c4edc94d06076e596a2692b550573a1a2c",
+      "passed": true
+    },
+    {
+      "case": "zero_price",
+      "seconds": 8.969,
+      "cli_exit_code": 0,
+      "outcome": "DRAFT_FOR_APPROVAL",
+      "branch": "Draft awaiting human approval",
+      "review_count": 0,
+      "matched_subtotals": {
+        "USD": "0.00"
+      },
+      "xlsx_bytes": 7530,
+      "xlsx_sha256": "0721c744c640476365ddccc93b18e6e19c51efb48109a7f97d167994f2872021",
+      "passed": true
+    },
+    {
+      "case": "duplicate_lines",
+      "seconds": 9.313,
+      "cli_exit_code": 0,
+      "outcome": "REVIEW_REQUIRED",
+      "branch": "Unresolved lines - review required",
+      "review_count": 2,
+      "matched_subtotals": {},
+      "xlsx_bytes": 7554,
+      "xlsx_sha256": "c2e9835fadef02d44dbce0271d2daffa2b69ce24e505cd7603ebe85be3a10062",
+      "passed": true
+    },
+    {
+      "case": "unknown_code",
+      "seconds": 9.204,
+      "cli_exit_code": 0,
+      "outcome": "REVIEW_REQUIRED",
+      "branch": "Unresolved lines - review required",
+      "review_count": 1,
+      "matched_subtotals": {},
+      "xlsx_bytes": 7490,
+      "xlsx_sha256": "5d9e39468b77efe87365b3a19b93b3cf9e7cfab2ef9a11123514042356ccb4c7",
+      "passed": true
+    },
+    {
+      "case": "invalid_catalogue",
+      "seconds": 8.875,
+      "cli_exit_code": 1,
+      "outcome": "validation_error",
+      "http_status": 422,
+      "file_outputs": 0,
+      "passed": true
+    },
+    {
+      "case": "xlsx_precision_limit",
+      "seconds": 9.203,
+      "cli_exit_code": 1,
+      "outcome": "validation_error",
+      "http_status": 422,
+      "file_outputs": 0,
+      "passed": true
+    }
+  ],
+  "n8n_version": "2.38.7",
+  "node_version": "v24.18.0",
+  "finished_utc": "2026-09-12T21:47:17.733031+00:00",
+  "all_passed": true,
+  "local_api_stopped": true
+}

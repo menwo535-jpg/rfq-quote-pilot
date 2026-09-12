@@ -1,0 +1,196 @@
+{
+  "name": "RFQ PDF to Excel - local review routing",
+  "nodes": [
+    {
+      "id": "e1c85f7f-9a79-5a0d-a4bf-2d998c338120",
+      "name": "Manual start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "27bf8c56-7792-5491-9c3c-cf9fb77c762e",
+      "name": "Synthetic RFQ input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        300
+      ],
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\"rfq\": {\"format\": \"pdf_base64\", \"content\": \"JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9Db3VyaWVyIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMyAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL0NvbnRlbnRzIDkgMCBSIC9NZWRpYUJveCBbIDAgMCA3OTIgNjEyIF0gL1BhcmVudCA4IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago2IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgOCAwIFIgL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0F1dGhvciAoYW5vbnltb3VzKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwOTExMDEwMjA5KzA4JzAwJykgL0NyZWF0b3IgKGFub255bW91cykgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwOTExMDEwMjA5KzA4JzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSBcKG9wZW5zb3VyY2VcKSkgCiAgL1N1YmplY3QgKHVuc3BlY2lmaWVkKSAvVGl0bGUgKFN5bnRoZXRpYyBSRlEgc2FtcGxlIC0gREVNTy0wMDEpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKOCAwIG9iago8PAovQ291bnQgMSAvS2lkcyBbIDUgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDYyNwo+PgpzdHJlYW0KR2FzYlc+QW91ciY7QiQ/LydfWC8iZ1NwdW43V0laPFY4ZWc4TT8sRF1RJVZwMzNdPyRQVFNkY0UpVEU7UmdMYE5MN0wtWCohUW1CKFtwZnEjdSI5Jj8/Oig6b0ZCWXQ0ZXNrWmwsW0Y1YUNHRVQ4NytiKz5VXWQ2cWUzRjU1Ii5fXTJGVzo6R1kiTWY1SCZvUEklVDheR2FCKyoxSk9JPyFeInIiKDYqZTBGREtfWHJJT1VZK2dHXDw0YklqcURbKz0jOzV0WHI9Vi9JQyFtZyQ3S10+clNsOlw4UlErPktuY1ojNDhSQkZySWApU1IiM2ZKKDRXYm5PKCMucU9IJT8sYGsuK0ghIXJaW0lQODZGcW06JzxaZmFVaUo9I1gqRzdgPSMocFpGXiY1Vm1NKk1QdF80RSpRTyZFWFElOFdSQk9yLyZxZXMxR2o9Y1E/NGM5b2YmWytGTkUtUyQhP1kpYy5WTCxsby4jXmwuZS4lMTkscXVERk9ZMCQrXj8rI0JzWUErXjBsQ2o2TylSV2ooQGdxWjJEMVAsISgtTidtWFNycFhISmBxKThMUGdoU11EUzdrQSFnUGhwYz8lK2pnLDZtPTNhX15QKGlEc1dnbCcjJFY/WUlkQko3KyMpblQnYWVpbWI2V0VFc0hJUkNbW1UjOCVHSC1Bc0NFcGlRSklaW1UnOGFrbkhhZGF0TVNPb0xoJFM2JTlgV3FwQF5ndXUmV0o/JHNyNlI4XWtSS0UrVDJPL1BsLlsvW3FpKXF1cipdbUFpaCFGOycjK0tMM2QuQTQoPCg3VnFbYVdtVjRSMUtcLC9pW10mOiJoSn4+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgMTAKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDYxIDAwMDAwIG4gCjAwMDAwMDAxMTIgMDAwMDAgbiAKMDAwMDAwMDIxOSAwMDAwMCBuIAowMDAwMDAwMzMxIDAwMDAwIG4gCjAwMDAwMDA0MzYgMDAwMDAgbiAKMDAwMDAwMDYyOSAwMDAwMCBuIAowMDAwMDAwNjk3IDAwMDAwIG4gCjAwMDAwMDA5ODEgMDAwMDAgbiAKMDAwMDAwMTA0MCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzwzNTEzNWQ4ZmQxNjFiYTYyZDBlNTA3MWVhN2FlMjQ3MT48MzUxMzVkOGZkMTYxYmE2MmQwZTUwNzFlYTdhZTI0NzE+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDcgMCBSCi9Sb290IDYgMCBSCi9TaXplIDEwCj4+CnN0YXJ0eHJlZgoxNzU3CiUlRU9GCg==\"}, \"catalogue_csv\": \"code,description,unit,unit_price,currency,price_version\\nMCB-16,Circuit breaker 16A,EA,8.75,USD,DEMO-2026-09-v1\\nCABLE-25,Cable 2.5 mm2,M,1.20,USD,DEMO-2026-09-v1\\nMCB-32,Circuit breaker 32A,EA,12.00,USD,DEMO-2026-09-v1\\nRELAY-12,Relay 12V,EA,4.30,USD,DEMO-2026-09-v1\\nCONTACT-1,Contactor,EA,18.00,USD,DEMO-2026-09-v1\\nCONTACT-1,Contactor,EA,19.00,USD,DEMO-2026-09-v1\\n\", \"include_xlsx\": true}",
+        "options": {}
+      }
+    },
+    {
+      "id": "7e7eb892-114e-5ff6-a816-8514aa18cc0f",
+      "name": "Prepare draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8765/quote",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "RFQ local API"
+        }
+      },
+      "retryOnFail": false,
+      "onError": "stopWorkflow"
+    },
+    {
+      "id": "46b0a437-b6a3-50a4-b35a-6bc02aca9f72",
+      "name": "All lines matched",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "all-lines-matched",
+              "leftValue": "={{ $json.quote?.status === 'DRAFT_FOR_APPROVAL' && $json.quote?.review_count === 0 && $json.quote?.complete_totals_by_currency != null && Object.keys($json.quote.complete_totals_by_currency).length > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "53ab0b3c-077c-5409-8206-60e38dbf88a2",
+      "name": "Draft awaiting human approval",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        180
+      ],
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "artifacts.xlsx_base64",
+        "binaryPropertyName": "workbook",
+        "options": {
+          "fileName": "quote-draft.xlsx",
+          "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      }
+    },
+    {
+      "id": "dd66ffe6-2cb5-57b8-b45d-1abbf05fcdd5",
+      "name": "Unresolved lines - review required",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        420
+      ],
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "artifacts.xlsx_base64",
+        "binaryPropertyName": "workbook",
+        "options": {
+          "fileName": "quote-draft.xlsx",
+          "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual start": {
+      "main": [
+        [
+          {
+            "node": "Synthetic RFQ input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Synthetic RFQ input": {
+      "main": [
+        [
+          {
+            "node": "Prepare draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare draft": {
+      "main": [
+        [
+          {
+            "node": "All lines matched",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All lines matched": {
+      "main": [
+        [
+          {
+            "node": "Draft awaiting human approval",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Unresolved lines - review required",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {},
+  "tags": []
+}
