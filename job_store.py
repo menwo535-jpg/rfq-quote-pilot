@@ -110,6 +110,22 @@ class JobStore:
                 FROM rfq_revisions WHERE job_id = ? ORDER BY revision''', (job_id,)).fetchall()
             return {'job_id': job_id, 'revisions': [dict(row) for row in rows]}
 
+    def recent(self):
+        """Latest 50 drafts, without large artifacts or original input content."""
+        with self._connection() as connection:
+            rows = connection.execute('''SELECT j.id, j.current_revision, j.created_at,
+                r.created_at AS updated_at, r.response_json FROM rfq_jobs j
+                JOIN rfq_revisions r ON r.job_id = j.id AND r.revision = j.current_revision
+                ORDER BY r.created_at DESC, j.id DESC LIMIT 51''').fetchall()
+            jobs = []
+            for row in rows[:50]:
+                quote = json.loads(row['response_json'])['quote']
+                jobs.append({'id': row['id'], 'revision': row['current_revision'],
+                             'created_at': row['created_at'], 'updated_at': row['updated_at'],
+                             'status': quote['status'], 'review_count': quote['review_count'],
+                             'row_count': len(quote['rows'])})
+            return {'jobs': jobs, 'has_more': len(rows) > 50}
+
     def _replay(self, connection, scope, key, digest, expected):
         operation = connection.execute('SELECT * FROM rfq_operations WHERE scope = ? AND key = ?',
                                        (scope, key)).fetchone()

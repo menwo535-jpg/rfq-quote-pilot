@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Draftdesk · 报价工作台</title><link rel="stylesheet" href="/ui/style.css"><script type="module" src="/ui/app.mjs"></script></head>
+<body>
+<header><a class="brand" href="/" aria-label="Draftdesk 首页"><span class="logo">D</span> Draftdesk <span class="edition">LOCAL WORKSPACE</span></a><span id="connection" class="connection">尚未连接</span></header>
+<div class="shell">
+<aside><div class="aside-heading"><h2>工作草稿</h2><button id="refresh-list" class="icon-button" disabled aria-label="刷新草稿列表">↻</button></div><p class="muted small">保存在这台电脑，可随时继续。</p><button id="new-draft" class="wide secondary" disabled>＋ 新建草稿</button><div id="draft-list" class="draft-list"><p class="muted small">连接后显示最近的草稿。</p></div><p id="list-note" class="small muted"></p><div class="aside-footer"><span class="dot"></span> 本地处理 · 无自动外发<br><span class="small">合成样例 / Portfolio demo</span></div></aside>
+<main>
+<div class="heading"><div><div class="eyebrow">RFQ → QUOTATION</div><h1>每一行报价，都有据可查。</h1><p class="muted">核对来件与价目表，保留异常和每一次修订。</p></div><span class="section-number">01 / DRAFT</span></div>
+<section id="connect-panel" class="card connect-panel"><div><h2>连接本地工作台</h2><p class="muted small">输入启动服务时设置的访问口令，仅在当前页面内存中保留。</p></div><form id="connect-form"><label for="token">本地访问口令</label><div class="inline"><input id="token" type="password" autocomplete="off" required minlength="24"><button>连接</button></div></form></section>
+<div id="notice" role="status" aria-live="polite" class="notice">先连接服务，再载入样例或导入自己的文件。</div>
+<button id="retry" class="retry" hidden>重试同一请求</button>
+<section class="card input-card"><div class="card-heading"><div><div class="eyebrow">SOURCE FILES</div><h2 id="input-title">准备报价输入</h2></div><button id="sample" class="secondary" disabled>载入演示 PDF</button></div>
+<fieldset id="input-fields" disabled><div class="file-grid"><div><label for="rfq-file">询价单 <span>PDF / TXT</span></label><input id="rfq-file" type="file" accept=".pdf,.txt"><label for="rfq-text" class="small muted">文本内容（PDF 使用原文件，可改用下方文本）</label><textarea id="rfq-text" rows="6" spellcheck="false" placeholder="ITEMS&#10;产品编码 | 描述 | 数量 | 单位&#10;END ITEMS"></textarea><p id="rfq-note" class="file-note">支持约定格式的文本 PDF，暂不含扫描件识别。</p></div><div><label for="catalogue-file">已确认的价目表 <span>CSV</span></label><input id="catalogue-file" type="file" accept=".csv"><label for="catalogue-text" class="small muted">价目表内容</label><textarea id="catalogue-text" rows="6" spellcheck="false" placeholder="code,description,unit,unit_price,currency,price_version"></textarea><p class="file-note">价格、币种和版本来自你的价目表。</p></div></div>
+<div class="actions"><p id="edit-note" class="muted small">每次保存都会重新校验输入，生成 Excel 草稿。</p><button id="save" type="button">生成并保存草稿 <span>→</span></button></div></fieldset></section>
+<section id="result-panel" hidden><div class="result-heading"><div><div class="eyebrow">REVIEW WORKSPACE</div><h2 id="result-title">草稿结果</h2><p id="job-meta" class="small muted"></p></div><button id="refresh-current" class="secondary">读取最新版本</button></div>
+<div class="metrics"><div class="metric"><span>项目行数</span><strong id="row-count">0</strong></div><div class="metric"><span>需要复核</span><strong id="review-count">0</strong></div><div class="metric total"><span id="total-label">已匹配行小计</span><strong id="total">—</strong><small id="total-note">未处理异常行不计入小计</small></div></div>
+<div class="card table-card"><div class="table-heading"><div id="status-badge" class="badge">待复核</div><label class="check"><input type="checkbox" id="only-review">只看待复核</label></div><div class="table-scroll" tabindex="0" role="region" aria-label="报价明细"><table><thead><tr><th>产品 / 描述</th><th>数量</th><th>单价</th><th>行金额</th><th>核对结果</th></tr></thead><tbody id="rows"></tbody></table></div><div id="empty-filter" class="empty" hidden>没有需要复核的项目。</div><div class="download-bar"><p class="small muted">导出的是当前显示版本，仍需人工确认。</p><div><button id="download-csv" class="secondary">下载 CSV</button><button id="download-xlsx">下载 Excel</button></div></div></div>
+<div class="history-bar"><label for="history">修订历史</label><select id="history"></select><span id="history-note" class="small muted"></span></div></section>
+<footer>金额由程序按价目表计算。异常项不会自动补价，草稿不会自动批准或发送。</footer>
+</main></div></body></html>

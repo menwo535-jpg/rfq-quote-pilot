@@ -16,6 +16,8 @@ The database contains quotation rows and generated CSV/HTML/XLSX artifacts. Keep
 
 ## Routes
 
+The [local browser workspace](WORKSPACE.md) uses these routes. It also adds authenticated `GET /jobs` for the 50 most recently updated draft summaries, with a `has_more` flag; export artifacts are omitted from this list. Static workspace files are served at `/` only when `--database` is enabled.
+
 Every route uses the existing loopback Host check and bearer authentication. Write requests need `Content-Type: application/json` and one `Idempotency-Key` header: 1–128 ASCII letters/digits or `_ . : -`.
 
 | Method and path | Request | Response |

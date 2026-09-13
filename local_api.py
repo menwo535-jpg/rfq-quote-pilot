@@ -103,10 +103,15 @@ def create_server(token, port=8765, *, database=None):
             self.wfile.write(data)
             self.close_connection = True
 
-        def authorized(self):
+        def local_host(self):
             expected_hosts = {f'127.0.0.1:{self.server.server_port}', f'localhost:{self.server.server_port}'}
             if len(self.headers.get_all('Host', [])) != 1 or self.headers.get('Host') not in expected_hosts:
                 self.reply(403, {'error': 'local Host required'})
+                return False
+            return True
+
+        def authorized(self):
+            if not self.local_host():
                 return False
             auth = self.headers.get('Authorization', '')
             if len(self.headers.get_all('Authorization', [])) != 1 or not hmac.compare_digest(auth.encode('utf-8'), ('Bearer ' + token).encode('ascii')):
@@ -175,10 +180,40 @@ def create_server(token, port=8765, *, database=None):
             self.reply(status, result, replayed=replayed)
 
         def do_GET(self):
-            if store is None or not self.path.startswith('/jobs/'):
+            assets = {'/': ('ui/index.html', 'text/html; charset=utf-8'),
+                      '/ui/style.css': ('ui/style.css', 'text/css; charset=utf-8'),
+                      '/ui/app.mjs': ('ui/app.mjs', 'text/javascript; charset=utf-8'),
+                      '/ui/client.mjs': ('ui/client.mjs', 'text/javascript; charset=utf-8'),
+                      '/ui/sample.pdf': ('samples/rfq.pdf', 'application/pdf'),
+                      '/ui/sample.csv': ('samples/catalogue.csv', 'text/csv; charset=utf-8')}
+            if store is not None and self.path in assets:
+                if not self.local_host():
+                    return
+                name, content_type = assets[self.path]
+                try:
+                    data = (Path(__file__).resolve().parent / name).read_bytes()
+                except OSError:
+                    return self.reply(503, {'error': 'UI asset unavailable; restore the complete source package'})
+                self.send_response(200)
+                self.send_header('Content-Type', content_type)
+                self.send_header('Content-Length', str(len(data)))
+                self.send_header('Cache-Control', 'no-store')
+                self.send_header('X-Content-Type-Options', 'nosniff')
+                self.send_header('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'")
+                self.end_headers()
+                self.wfile.write(data)
+                return
+            if store is None or not (self.path == '/jobs' or self.path.startswith('/jobs/')):
                 return self.reply(405, {'error': 'use POST /quote, or enable --database for jobs'})
             if not self.authorized():
                 return
+            if self.path == '/jobs':
+                try:
+                    return self.reply(200, store.recent())
+                except sqlite3.Error:
+                    return self.reply(503, {'error': 'local database unavailable'})
+                except Exception:
+                    return self.reply(500, {'error': 'unable to list stored drafts; inspect locally'})
             route = re.fullmatch(r'/jobs/([a-f0-9]{32})(?:/(revisions)(?:/([1-9][0-9]{0,8}))?)?', self.path)
             if route is None:
                 return self.reply(404, {'error': 'unknown endpoint'})
